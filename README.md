@@ -52,8 +52,8 @@ CREATE TABLE `successful_emails` (
 
 1. **Clone the Repository:**
    ```sh
-   git clone https://github.com/gargajay/email-parser.git
-   cd email-parser
+   git clone https://github.com/gargajay/email_parser.git
+   cd email_parser
    ```
 
 2. **Install Dependencies:**
