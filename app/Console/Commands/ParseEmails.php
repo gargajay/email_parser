@@ -6,6 +6,7 @@ use App\Helper\Helper;
 use Illuminate\Console\Command;
 use App\Models\SuccessfulEmail;
 use Html2Text\Html2Text;
+use Illuminate\Support\Facades\Log;
 
 class ParseEmails extends Command
 {
@@ -19,15 +20,18 @@ class ParseEmails extends Command
 
     public function handle()
     {
-        $emails = SuccessfulEmail::where('email','!=','done')->get();
+        $emails = SuccessfulEmail::where('raw_text',' ')->limit(10)->get();
+
 
         foreach ($emails as $email) {
-            $parse =  Helper::parseRawEmail($email->email);
-
-            $email->raw_text = $parse['plainText'];
-            $email->email = 'done';
-            $email->save();
-
+            try {
+                $parse = Helper::parseRawEmail($email->email);
+                $email->raw_text = $parse['plainText'] ?? 'No plan text';
+                $email->save();
+            } catch (\Exception $e) {
+                // Log the exception or handle the error as needed
+                Log::error('Error parsing email ID ' . $email->id . ': ' . $e->getMessage());
+            }
         }
 
     }

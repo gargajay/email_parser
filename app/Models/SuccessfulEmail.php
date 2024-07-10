@@ -9,6 +9,8 @@ class SuccessfulEmail extends Model
 {
     use HasFactory;
 
+    public $timestamps = false;
+
     protected $fillable = [
         'affiliate_id',
         'envelope',

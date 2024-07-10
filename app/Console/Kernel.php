@@ -13,7 +13,9 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
+        Log::info("cron working on server");
         $schedule->command('emails:parse')->hourly();
+       // $schedule->command('emails:parse')->everyFiveSeconds();
     }
     /**
      * Register the commands for the application.

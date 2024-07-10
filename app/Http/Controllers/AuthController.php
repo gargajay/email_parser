@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Http\Controllers; 
+namespace App\Http\Controllers;
 
+use App\Helper\Helper;
 use App\Http\Controllers\Controller;
+use App\Models\SuccessfulEmail;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -34,7 +36,7 @@ class AuthController extends Controller
         }
 
         // Attempt to authenticate user
-        if (!Auth::attempt(['email'=> $request->email, 'password'=> $request->password])) {
+        if (!Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
             $this->response['message'] = 'Invalid login details';
             return response()->json($this->response, STATUS_UNAUTHORIZED); // Unauthorized
         }
@@ -97,7 +99,7 @@ class AuthController extends Controller
         $this->response['success'] = true;
         $this->response['message'] = 'Fetching profile info.';
         $this->response['data'] = $user;
-        
+
         return response()->json($this->response, STATUS_OK); // OK
     }
 
@@ -115,11 +117,25 @@ class AuthController extends Controller
 
         $this->response['success'] = true;
         $this->response['message'] = 'Logout successfully.';
-        
+
         return response()->json($this->response, STATUS_OK); // OK
     }
 
-    public function webhook(Request $request){
-Log::info("webhock",['request'=>$request->all()]);
+    public function webhook(Request $request)
+    {
+
+        $emails = SuccessfulEmail::get();
+
+
+        foreach ($emails as $email) {
+            try {
+                $parse = Helper::parseRawEmail($email->email);
+                $email->raw_text = $parse['plainText'];
+                $email->save();
+            } catch (\Exception $e) {
+                // Log the exception or handle the error as needed
+                Log::error('Error parsing email ID ' . $email->id . ': ' . $e->getMessage());
+            }
+        }
     }
 }
