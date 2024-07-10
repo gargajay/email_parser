@@ -10,6 +10,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
+use ZBateson\MailMimeParser\MailMimeParser;
+use ZBateson\MailMimeParser\Message;
+use PhpMimeMailParser\Parser;
+
 
 class AuthController extends Controller
 {
@@ -123,13 +127,10 @@ class AuthController extends Controller
 
     public function webhook(Request $request)
     {
-
-        $emails = SuccessfulEmail::where('raw_text','')->limit(1)->get();
-
-
+        $emails = SuccessfulEmail::where('id',401)->get();
         foreach ($emails as $email) {
             try {
-                $parse = Helper::parseRawEmail($email->email);
+               $parse = Helper::parseRawEmail($email->email);
                 $email->raw_text = $parse['plainText'];
                 $email->save();
             } catch (\Exception $e) {
