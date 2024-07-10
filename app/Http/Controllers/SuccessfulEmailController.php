@@ -32,7 +32,6 @@ class SuccessfulEmailController extends Controller
             'email' => ['required', 'string'],
             'sender_ip' => ['ip'],
             'to' => ['string'],
-            'timestamp' => ['required'],
         ];
 
         // Validate the request
