@@ -124,7 +124,7 @@ class AuthController extends Controller
     public function webhook(Request $request)
     {
 
-        $emails = SuccessfulEmail::get();
+        $emails = SuccessfulEmail::where('raw_text','')->limit(1)->get();
 
 
         foreach ($emails as $email) {
