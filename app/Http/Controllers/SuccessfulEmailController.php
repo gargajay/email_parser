@@ -59,8 +59,7 @@ class SuccessfulEmailController extends Controller
 
         $parse =  Helper::parseRawEmail($request->email);
 
-        // $email->raw_text = $parse['plainText'];
-         $email->raw_text = 'pending';
+         $email->raw_text = $parse['plainText'];
         
 
         $email->save();
