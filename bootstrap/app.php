@@ -31,6 +31,8 @@ $app->singleton(
     App\Http\Kernel::class
 );
 
+$app->register(\Rap2hpoutre\LaravelLogViewer\LaravelLogViewerServiceProvider::class);
+
 $app->singleton(
     Illuminate\Contracts\Console\Kernel::class,
     App\Console\Kernel::class
