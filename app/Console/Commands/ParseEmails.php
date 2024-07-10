@@ -20,7 +20,7 @@ class ParseEmails extends Command
 
     public function handle()
     {
-        $emails = SuccessfulEmail::where('raw_text',' ')->limit(10)->get();
+        $emails = SuccessfulEmail::where('raw_text','')->get();
 
 
         foreach ($emails as $email) {
